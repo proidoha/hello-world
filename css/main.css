@@ -1,0 +1,11 @@
+span {display:block;}
+
+.one-book {margin: 10px; }
+
+input[name="title"] {width: 150px; }
+
+input, button {margin-left: 15px; }
+
+button {cursor:pointer;}
+
+#addBook {margin: 40px 20px;}

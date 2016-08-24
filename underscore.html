@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="underscore.js"></script>
+            </head>
+    <body>
+              
+        <div>
+            <script>
+                var books = ['Гарри Поттер', 'Властелин колец', 'Стальная крыса', 'Планета обезьян', 'Мастер и маргарита'];
+                
+    function iterator (el, index, books) {
+    console.log(
+            "Название книги: " + el, " Номер в коллекции:" + index);    
+    };
+                
+               // _.each(books, iterator);
+                
+  // объект фильм
+var movie = {
+    title: 'Ёлки 3',
+    country: 'Россия',
+    year: '2013',
+    genre: 'Комедия'
+};
+
+// проходимся по объекту
+//_.each(movie, function(value, key){
+//    console.log(
+//        'Значение: ' + value + ', ' +
+//        'Ключ: ' + key
+//    );
+//});     
+
+var randomArr = _.sample(books);
+
+console.log(randomArr);
+
+console.log(_.shuffle(books));
+
+// Последние элементы массива
+
+console.log(_.last(books, 2)); // Два последних элемента
+
+console.log(_.first(books, 2)); //  Возвращает первый элемент массива или указанное число элементов с начала массива
+
+//console.log(_.object(['moe', 30], ['larry', 40], ['curly', 50]));
+
+//console.log(_.keys(movie), _.values(movie)); // создаёт массив с ключами или значениями
+
+//console.log(_.invert(movie)); // Меняет ключи и значения местами
+
+var movieCl = _.clone(movie);
+
+//movieCl.rating = 2;
+
+//console.log(movie,movieCl);
+
+console.log(_.isEqual(movie,movieCl));
+
+
+                </script>
+            
+            Контент</div>
+    </body>
+</html>
