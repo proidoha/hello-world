@@ -40,12 +40,7 @@ this.model.on('change', this.render, this);
 this.model.on('invalid', this.invalidFunct, this);
 
 this.model.on('destroy', this.remove, this);
-        //this.listenTo(this.model, "change", this.render);
-        //this.listenTo(this.model, "destroy", this.remove);
-        //this.render();
-
-///return this;
-
+   
 	},
 	render: function() {
 		
@@ -63,20 +58,12 @@ return this;
 	changeTitle: function() {
 var newTitle = this.$('input[name=title]').val();
 
-this.model.set('name', newTitle, {validate: true});
-//this.el
-//this.render();
-//console.log(this.model.toJSON());
-
-//return this;		
+this.model.set('name', newTitle, {validate: true});	
 	},
 	destroy: function () {
 
 this.model.destroy();
 
-//this.model.render;
-
-//console.log(books.toJSON());
 
 	},
 remove: function() {
@@ -189,6 +176,7 @@ alert(this.validationError);
 
 window.addBook =  new BooksApp.Views.AddBook({collection: books});
 
+// Роутер
 
 BooksApp.Router = Backbone.Router.extend({
 routes: {
@@ -196,7 +184,9 @@ routes: {
 	'read': 'read',
 	'page/:id': 'page',
 	'search/:query': 'search',
-	'*word' : 'default'
+	"special/:id" : 'special',
+	'*word' : 'default',
+	
 
 },
 index: function () {
@@ -215,6 +205,11 @@ console.log('Поиск ' + query);
 default: function(word) {
 
 alert('Такой страницы не существует! Вы пытались найти: ' +  word);
+},
+
+special: function (id) {
+console.log(id);
+
 }
 });
 
@@ -222,9 +217,9 @@ window.route = new BooksApp.Router();
 
 Backbone.history.start();
 
-route.navigate('page/2', {replace: true});
+//route.navigate('page/2', {replace: true});
 
-console.log('Даёшь git!');
+//console.log('Даёшь git!');
 
 });
 
