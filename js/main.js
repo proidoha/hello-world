@@ -17,13 +17,15 @@ return _.template($(selector).html());
 // Модель Books
 
 BooksApp.Models.Book =  Backbone.Model.extend({
-	defaults:{name: 'Название книги', year: 2016, pages: 350, author: 'Имя автора'},
+	defaults:{title: 'Название книги', year: 2016, pages: 350, author: 'Имя автора'},
+	urlRoot: 'php/index.php',
 validate: function (attrs, options) {
 
 if (attrs.year < 2000) { return 'Вы пытаетесь ввести неверный год издания книги!';} 
 
-else if (! $.trim(attrs.name) || attrs.name.length < 2) {return 'Значение названия книги не может быть пустым!'}
+else if (! $.trim(attrs.title) || attrs.title.length < 2) {return 'Значение названия книги не может быть пустым!'}
 },
+url: 'php/index.php'
 //events: [{''}]
 });
 
@@ -57,8 +59,12 @@ return this;
 	},
 	changeTitle: function() {
 var newTitle = this.$('input[name=title]').val();
+console.log(this.model);
+this.model.set('title', newTitle, {validate: true});	
 
-this.model.set('name', newTitle, {validate: true});	
+this.model.save();
+
+return this;
 	},
 	destroy: function () {
 
@@ -102,7 +108,7 @@ var bookView = new BooksApp.Views.book({model: book});
 this.$el.append(bookView.render().el);
 
 return this;
-	}	
+	}
 	});
 
 
@@ -111,14 +117,19 @@ return this;
 
 // Коллекция книг
 
-BooksApp.Collections.Books = Backbone.Collection.extend({model: BooksApp.Models.Book});
+BooksApp.Collections.Books = Backbone.Collection.extend({model: BooksApp.Models.Book,
+url: 'php/index.php'});
 
 
-window.books = new BooksApp.Collections.Books([
+/*window.books = new BooksApp.Collections.Books([
 {name: 'Планета обезьян', author: 'Пьер Буль', year: 2001},
 {author: 'Михаил Булгаков', name: 'Мастер и Маргарита', pages: 650},
 {author: 'Пётр Алешковский', name: 'Крепость', year: 2014, pages: 860}
-	]);
+	]);*/
+
+	window.books = new BooksApp.Collections.Books();
+
+books.fetch();
 
 // Добавляем модель в коллекцию
 
@@ -141,7 +152,7 @@ BooksApp.Views.AddBook = Backbone.View.extend({
 	},
 	validate: function (attrs) {
 		//console.log(attrs);
-	if (!$.trim(attrs.name) ){
+	if (!$.trim(attrs.title) ){
 this.isValid = false;
 this.validationError =  'Вы ввели некорректное название книги!';
 	return this.validationError;
@@ -190,7 +201,7 @@ routes: {
 
 },
 index: function () {
-	console.log('Индексный роутер!');
+	//console.log('Индексный роутер!');
 },
 read: function () {
 	console.log('Роут read');
@@ -213,9 +224,9 @@ console.log(id);
 }
 });
 
-window.route = new BooksApp.Router();
+//window.route = new BooksApp.Router();
 
-Backbone.history.start();
+//Backbone.history.start();
 
 //route.navigate('page/2', {replace: true});
 

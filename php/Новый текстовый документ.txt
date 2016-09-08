@@ -1,0 +1,12 @@
+dbuser = reader
+host = localhost
+passworddb = getbook
+
+Создание таблицы:
+CREATE table Books (
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+title VARCHAR(255),
+author VARCHAR(255) DEFAULT 'Имя автора',
+year INT DEFAULT '2016',
+pages INT DEFAULT '350'
+)
