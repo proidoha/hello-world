@@ -25,7 +25,7 @@ if (attrs.year < 2000) { return 'Вы пытаетесь ввести невер
 
 else if (! $.trim(attrs.title) || attrs.title.length < 2) {return 'Значение названия книги не может быть пустым!'}
 },
-url: 'php/index.php'
+urlRoot: 'php/index.php'
 //events: [{''}]
 });
 
@@ -37,11 +37,13 @@ BooksApp.Views.book = Backbone.View.extend({
 	className: 'one-book',
 	template: BooksApp.Helpers.template('#booksTpl'),
 	initialize: function() {
-this.model.on('change', this.render, this);
+//this.model.on('change', this.render, this);
 
 this.model.on('invalid', this.invalidFunct, this);
 
 this.model.on('destroy', this.remove, this);
+
+this.model.on('change', this.changeModel, this);
    
 	},
 	render: function() {
@@ -62,7 +64,14 @@ var newTitle = this.$('input[name=title]').val();
 console.log(this.model);
 this.model.set('title', newTitle, {validate: true});	
 
-this.model.save();
+/*this.model.save({title: this.model.escape('title'), id: this.model.id},{patch: true, wait: true, success: function(model, response) {
+console.log('Ура! ' + response);
+},
+error: function(model, response) {
+console.log(response);
+
+}
+});*/
 
 return this;
 	},
@@ -79,6 +88,21 @@ this.$el.remove();
 	invalidFunct: function(model, error) {
 		alert(error);
 
+	},
+
+	changeModel: function() {
+this.model.save(this.model.toJSON(),{success: function(model, response) {
+console.log('Ура! ' + response);
+},
+error: function(model, response) {
+console.log(response);
+
+}
+});
+
+this.render();
+
+return this;
 	}
 });
 
@@ -108,7 +132,19 @@ var bookView = new BooksApp.Views.book({model: book});
 this.$el.append(bookView.render().el);
 
 return this;
-	}
+	},
+add: function(book) {
+var bookView = new BooksApp.Views.book({model: book});
+
+this.$el.append(bookView.render().el);
+
+//bookView.model();
+
+return this;
+
+
+}
+
 	});
 
 
@@ -118,7 +154,9 @@ return this;
 // Коллекция книг
 
 BooksApp.Collections.Books = Backbone.Collection.extend({model: BooksApp.Models.Book,
-url: 'php/index.php'});
+url: 'php/index.php',
+//initialize: ''
+});
 
 
 /*window.books = new BooksApp.Collections.Books([
@@ -166,7 +204,10 @@ events: {
 submit: function(event) {
 event.preventDefault();
 var newBookTitle = this.$('input[name=newTitle]').val();
-var newBook =  new BooksApp.Models.Book({name: newBookTitle});
+
+console.log(newBookTitle);
+
+var newBook =  new BooksApp.Models.Book({title: newBookTitle});
 
 this.validate(newBook.toJSON());
 
@@ -175,6 +216,11 @@ return false;
 }
 
 this.collection.add(newBook);
+
+//console.log(this.collection);
+
+
+newBook.save();
 
 //console.log(books.toJSON());
 return this;
@@ -189,7 +235,7 @@ window.addBook =  new BooksApp.Views.AddBook({collection: books});
 
 // Роутер
 
-BooksApp.Router = Backbone.Router.extend({
+/*BooksApp.Router = Backbone.Router.extend({
 routes: {
 	'': 'index',
 	'read': 'read',
@@ -223,7 +269,7 @@ console.log(id);
 
 }
 });
-
+*/
 //window.route = new BooksApp.Router();
 
 //Backbone.history.start();
